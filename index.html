@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>BL@CKN1TE · Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: #0a0a0f;
+            color: #c0e0ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 10px;
+        }
+        body::-webkit-scrollbar {
+            width: 6px;
+        }
+        body::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        body::-webkit-scrollbar-thumb {
+            background: #00f0c8;
+            border-radius: 10px;
+        }
+
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.12;
+            pointer-events: none;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            padding: 10px;
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+        }
+        .glass-card {
+            background: rgba(10, 20, 30, 0.92);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 200, 0.06);
+            border-radius: 28px;
+            padding: 28px 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(0, 255, 200, 0.04), 0 0 80px rgba(0, 255, 200, 0.02);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(0, 255, 200, 0.02), transparent 60%);
+            pointer-events: none;
+        }
+
+        /* ===== LOGIN ===== */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .glitch-logo {
+            font-size: 80px;
+            color: #00f0c8;
+            text-shadow: 0 0 40px rgba(0, 255, 200, 0.3), 0 0 80px rgba(0, 255, 200, 0.1);
+            display: block;
+            animation: glitchLogo 3s infinite;
+        }
+        @keyframes glitchLogo {
+            0%,
+            90%,
+            100% {
+                transform: translate(0);
+                text-shadow: 0 0 40px rgba(0, 255, 200, 0.3);
+            }
+            92% {
+                transform: translate(-3px, 2px);
+                text-shadow: 0 0 60px rgba(255, 0, 100, 0.3);
+            }
+            94% {
+                transform: translate(3px, -2px);
+                text-shadow: 0 0 60px rgba(0, 100, 255, 0.3);
+            }
+            96% {
+                transform: translate(-2px, 3px);
+                text-shadow: 0 0 60px rgba(255, 255, 0, 0.3);
+            }
+            98% {
+                transform: translate(2px, -3px);
+                text-shadow: 0 0 60px rgba(0, 255, 200, 0.3);
+            }
+        }
+        .brand-tag {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: #00f0c8;
+            text-shadow: 0 0 20px rgba(0, 255, 200, 0.15);
+            margin-top: 4px;
+        }
+        .brand-tag .blink-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #00f0c8;
+            border-radius: 50%;
+            animation: blink 1s step-end infinite;
+            margin: 0 6px;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .input-group {
+            margin-top: 14px;
+            position: relative;
+        }
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #6a8faa;
+            margin-bottom: 6px;
+            font-family: 'Orbitron', monospace;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 16px 18px;
+            background: rgba(0, 20, 30, 0.5);
+            border: 1px solid rgba(0, 255, 200, 0.06);
+            border-radius: 16px;
+            color: #e0f0ff;
+            font-size: 18px;
+            font-family: 'Share Tech Mono', monospace;
+            transition: 0.3s;
+            outline: none;
+        }
+        .input-group input:focus {
+            border-color: #00f0c8;
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.06);
+        }
+        .input-group input::placeholder {
+            color: #3a5a6a;
+            font-weight: 300;
+            font-size: 16px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            margin-top: 18px;
+            background: linear-gradient(135deg, #00c8a0, #006688);
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 0 40px rgba(0, 255, 200, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transform: rotate(45deg);
+            animation: shine 4s infinite;
+        }
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) rotate(45deg);
+            }
+        }
+        .login-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 60px rgba(0, 255, 200, 0.15);
+        }
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .login-error {
+            color: #ff4477;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 0 0 20px rgba(255, 68, 119, 0.2);
+        }
+
+        .social-divider {
+            text-align: center;
+            color: #6a8faa;
+            font-size: 14px;
+            margin: 14px 0 12px;
+            position: relative;
+            font-family: 'Share Tech Mono', monospace;
+        }
+        .social-divider::before,
+        .social-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: rgba(0, 255, 200, 0.06);
+        }
+        .social-divider::before {
+            left: 0;
+        }
+        .social-divider::after {
+            right: 0;
+        }
+
+        .social-login {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 6px;
+        }
+        .social-btn {
+            padding: 10px 14px;
+            border: 1px solid rgba(0, 255, 200, 0.06);
+            border-radius: 12px;
+            background: rgba(0, 255, 200, 0.02);
+            color: #8ab0c8;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Rajdhani', sans-serif;
+            flex: 1;
+            min-width: 80px;
+            justify-content: center;
+        }
+        .social-btn:hover {
+            border-color: #00f0c8;
+            color: #00f0c8;
+            background: rgba(0, 255, 200, 0.04);
+        }
+        .social-btn i {
+            font-size: 18px;
+        }
+        .social-btn.google i {
+            color: #ea4335;
+        }
+        .social-btn.facebook i {
+            color: #1877f2;
+        }
+        .social-btn.instagram i {
+            color: #e4405f;
+        }
+        .social-btn.github i {
+            color: #6e5494;
+        }
+
+        .countdown-timer {
+            text-align: center;
+            color: #ff4477;
+            font-family: 'Orbitron', monospace;
+            font-size: 16px;
+            margin-top: 10px;
+            display: none;
+            text-shadow: 0 0 20px rgba(255, 68, 119, 0.2);
+        }
+        .request-key-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 10px;
+            background: transparent;
+            border: 1px solid rgba(0, 255, 200, 0.06);
+            border-radius: 16px;
+            color: #6a8faa;
+            font-size: 16px;
+            font-family: 'Orbitron', monospace;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .request-key-btn:hover {
+            border-color: #00f0c8;
+            color: #00f0c8;
+            background: rgba(0, 255, 200, 0.03);
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.05);
+        }
+
+        /* ===== SOCIAL LOGIN MODAL ===== */
+        .social-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .social-modal.open {
+            display: flex;
+        }
+        .social-modal .modal-box {
+            background: #0f1a22;
+            border: 1px solid rgba(0, 255, 200, 0.08);
+            border-radius: 28px;
+            padding: 32px 28px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.9);
+            animation: popIn 0.3s ease;
+        }
+        @keyframes popIn {
+            from {
+                transform: scale(0.92) translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+        .social-modal .modal-box .modal-close {
+            float: right;
+            background: transparent;
+            border: none;
+            color: #6a8faa;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .social-modal .modal-box .modal-close:hover {
+            color: #00f0c8;
+        }
+        .social-modal .modal-box .modal-icon {
+            font-size: 48px;
+            margin-bottom: 8px;
+        }
+        .social-modal .modal-box h3 {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            color: #00f0c8;
+            margin-bottom: 4px;
+            text-shadow: 0 0 20px rgba(0, 255, 200, 0.1);
+        }
+        .social-modal .modal-box p {
+            color: #8ab0c8;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+        .social-modal .modal-box input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 20, 30, 0.4);
+            border: 1px solid rgba(0, 255, 200, 0.04);
+            border-radius: 12px;
+            color: #e0f0ff;
+            font-size: 16px;
+            font-family: 'Rajdhani', sans-serif;
+            transition: 0.3s;
+            outline: none;
+            margin-bottom: 10px;
+        }
+        .social-modal .modal-box input:focus {
+            border-color: #00f0c8;
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.04);
+        }
+        .social-modal .modal-box input::placeholder {
+            color: #3a5a6a;
+        }
+        .social-modal .modal-box .modal-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00c8a0, #006688);
+            border: none;
+            border-radius: 14px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        .social-modal .modal-box .modal-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 255, 200, 0.1);
+        }
+        .social-modal .modal-box .modal-error {
+            color: #ff4477;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* ===== BOOTLOADER ===== */
+        #bootloaderScreen {
+            display: none;
+        }
+        .terminal-box {
+            background: #050a0e;
+            border-radius: 16px;
+            padding: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: #00f0c8;
+            border: 1px solid rgba(0, 255, 200, 0.06);
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
+            min-height: 200px;
+            max-height: 300px;
+            overflow-y: auto;
+            line-height: 2;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .terminal-box .blink {
+            animation: blink 1s step-end infinite;
+        }
+        .terminal-box .green {
+            color: #00f0c8;
+        }
+        .terminal-box .yellow {
+            color: #f0c800;
+        }
+        .terminal-box .red {
+            color: #ff4477;
+        }
+        .terminal-box .dim {
+            color: #3a6a7a;
+        }
+        .terminal-box .cyan {
+            color: #00d4ff;
+        }
+        .terminal-box .purple {
+            color: #b44cff;
+        }
+        .terminal-box .orange {
+            color: #ff8800;
+        }
+        .boot-progress {
+            margin-top: 14px;
+            height: 4px;
+            background: #0a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .boot-progress .bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00f0c8, #0088a0, #00f0c8);
+            background-size: 200% 100%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            animation: progressGlow 1.5s ease-in-out infinite;
+        }
+        @keyframes progressGlow {
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .boot-footer {
+            font-size: 12px;
+            color: #6a8faa;
+            margin-top: 10px;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 480px) {
+            .glass-card {
+                padding: 20px 16px;
+            }
+            .glitch-logo {
+                font-size: 60px;
+            }
+            .brand-tag {
+                font-size: 12px;
+            }
+            .input-group input {
+                font-size: 16px;
+                padding: 14px 16px;
+            }
+            .login-btn {
+                font-size: 18px;
+                padding: 16px;
+            }
+            .social-btn {
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+            .social-modal .modal-box {
+                padding: 24px 18px;
+            }
+        }
+        @media (max-width: 360px) {
+            .glitch-logo {
+                font-size: 50px;
+            }
+            .social-btn {
+                font-size: 11px;
+                padding: 6px 8px;
+                min-width: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== MATRIX RAIN CANVAS ===== -->
+    <canvas id="matrixCanvas"></canvas>
+
+    <!-- ===== CONTAINER ===== -->
+    <div class="container">
+
+        <!-- ============================================================ -->
+        <!-- LOGIN SCREEN -->
+        <!-- ============================================================ -->
+        <div id="loginScreen" class="glass-card">
+            <div class="logo-area">
+                <span class="glitch-logo"><i class="fas fa-skull"></i></span>
+                <div class="brand-tag">
+                    <span class="blink-dot"></span> BL@CKN1TE · OMNIPOTENT <span class="blink-dot"></span>
+                </div>
+                <p style="font-size:12px; color:#6a8faa; font-family:'Share Tech Mono', monospace; letter-spacing:2px; margin-top:4px;">
+                    ⚡ ULTIMATE HACKER MULTIVERSE ⚡
+                </p>
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-user-astronaut"></i> USERNAME</label>
+                <input type="text" id="usernameInput" placeholder="Enter your handle..." value="" />
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-key"></i> ACCESS KEY</label>
+                <input type="password" id="passwordInput" placeholder="Enter your secret key..." value="" />
+            </div>
+            <button class="login-btn" id="loginBtn"><i class="fas fa-unlock-alt"></i> UNLOCK</button>
+            <div class="login-error" id="loginError"><span>⛔ ACCESS DENIED</span></div>
+
+            <div class="social-divider">— OR —</div>
+
+            <div class="social-login">
+                <button class="social-btn google" id="googleBtn"><i class="fab fa-google"></i> Google</button>
+                <button class="social-btn facebook" id="facebookBtn"><i class="fab fa-facebook"></i> Facebook</button>
+                <button class="social-btn instagram" id="instagramBtn"><i class="fab fa-instagram"></i> Instagram</button>
+                <button class="social-btn github" id="githubBtn"><i class="fab fa-github"></i> GitHub</button>
+            </div>
+
+            <div class="countdown-timer" id="countdownTimer">⏳ LOCKED · <span id="countdownSeconds">60</span>s</div>
+            <button class="request-key-btn" id="requestKeyBtn"><i class="fas fa-question-circle"></i> REQUEST KEY</button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- BOOTLOADER SCREEN -->
+        <!-- ============================================================ -->
+        <div id="bootloaderScreen" class="glass-card">
+            <h3 style="font-family:'Orbitron'; font-size:16px; color:#00f0c8; margin-bottom:10px; letter-spacing:2px; text-shadow:0 0 20px rgba(0,255,200,0.1);">
+                <i class="fas fa-terminal"></i> BOOTING MULTIVERSE...
+            </h3>
+            <div class="terminal-box" id="terminalOutput">
+                <span class="dim">> INITIALIZING KERNEL...</span><span class="blink">_</span>
+            </div>
+            <div class="boot-progress"><div class="bar" id="bootProgressBar"></div></div>
+            <div class="boot-footer">
+                <i class="fas fa-shield-alt"></i> SECURE ENCLAVE · AES-256 · ZERO-LOG
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SOCIAL LOGIN MODAL -->
+    <!-- ============================================================ -->
+    <div class="social-modal" id="socialModal">
+        <div class="modal-box">
+            <button class="modal-close" id="modalCloseBtn">✕</button>
+            <div class="modal-icon" id="modalIcon"><i class="fab fa-google"></i></div>
+            <h3 id="modalTitle">Login with Google</h3>
+            <p id="modalDesc">Enter your Google account email to continue</p>
+            <input type="text" id="modalInput" placeholder="Enter your email or username..." />
+            <button class="modal-btn" id="modalLoginBtn"><i class="fas fa-arrow-right"></i> CONTINUE</button>
+            <div class="modal-error" id="modalError">⚠️ Please enter a valid account</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // MATRIX RAIN CANVAS
+            // ============================================================
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_+-=[]{}|;:,.<>?/';
+            const columns = Math.floor(canvas.width / 14);
+            const drops = [];
+            for (let i = 0; i < columns; i++) { drops[i] = Math.random() * -100; }
+
+            function drawMatrix() {
+                ctx.fillStyle = 'rgba(10, 10, 15, 0.04)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.font = '14px monospace';
+                for (let i = 0; i < drops.length; i++) {
+                    const char = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * 14;
+                    const y = drops[i] * 14;
+                    const brightness = Math.random() * 0.5 + 0.5;
+                    ctx.fillStyle = `rgba(0, 255, 200, ${brightness * 0.18})`;
+                    ctx.fillText(char, x, y);
+                    if (y > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
+                    drops[i] += 0.5 + Math.random() * 0.5;
+                }
+            }
+            setInterval(drawMatrix, 60);
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const loginScreen = document.getElementById('loginScreen');
+            const bootScreen = document.getElementById('bootloaderScreen');
+            const usernameInput = document.getElementById('usernameInput');
+            const passwordInput = document.getElementById('passwordInput');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+            const countdownTimer = document.getElementById('countdownTimer');
+            const countdownSeconds = document.getElementById('countdownSeconds');
+            const requestKeyBtn = document.getElementById('requestKeyBtn');
+            const terminalOut = document.getElementById('terminalOutput');
+            const bootBar = document.getElementById('bootProgressBar');
+
+            // Social Modal
+            const socialModal = document.getElementById('socialModal');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
+            const modalIcon = document.getElementById('modalIcon');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDesc = document.getElementById('modalDesc');
+            const modalInput = document.getElementById('modalInput');
+            const modalLoginBtn = document.getElementById('modalLoginBtn');
+            const modalError = document.getElementById('modalError');
+
+            const googleBtn = document.getElementById('googleBtn');
+            const facebookBtn = document.getElementById('facebookBtn');
+            const instagramBtn = document.getElementById('instagramBtn');
+            const githubBtn = document.getElementById('githubBtn');
+
+            // ============================================================
+            // STATE
+            // ============================================================
+            let failedAttempts = 0;
+            const MAX_ATTEMPTS = 3;
+            let isLocked = false;
+            let countdownInterval = null;
+            let selectedProvider = '';
+
+            // ============================================================
+            // SOUND EFFECTS
+            // ============================================================
+            function playSound(type) {
+                try {
+                    const audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    if (type === 'click') {
+                        oscillator.frequency.value = 800;
+                        gainNode.gain.value = 0.1;
+                        oscillator.start();
+                        oscillator.stop(audioCtx.currentTime + 0.05);
+                    } else if (type === 'success') {
+                        oscillator.frequency.value = 1200;
+                        gainNode.gain.value = 0.15;
+                        oscillator.start();
+                        oscillator.stop(audioCtx.currentTime + 0.15);
+                    } else if (type === 'error') {
+                        oscillator.frequency.value = 300;
+                        gainNode.gain.value = 0.15;
+                        oscillator.start();
+                        oscillator.stop(audioCtx.currentTime + 0.3);
+                    }
+                } catch(e) { /* Audio not supported */ }
+            }
+
+            // ============================================================
+            // SOCIAL LOGIN - OPEN MODAL
+            // ============================================================
+            function openSocialLogin(provider) {
+                selectedProvider = provider;
+                const icons = {
+                    'Google': 'fab fa-google',
+                    'Facebook': 'fab fa-facebook',
+                    'Instagram': 'fab fa-instagram',
+                    'GitHub': 'fab fa-github'
+                };
+                const colors = {
+                    'Google': '#ea4335',
+                    'Facebook': '#1877f2',
+                    'Instagram': '#e4405f',
+                    'GitHub': '#6e5494'
+                };
+                modalIcon.innerHTML = `<i class="${icons[provider]}" style="color:${colors[provider]}"></i>`;
+                modalTitle.textContent = `Login with ${provider}`;
+                modalDesc.textContent = `Enter your ${provider} account email or username to continue`;
+                modalInput.value = '';
+                modalInput.placeholder = `Enter your ${provider} email or username...`;
+                modalError.style.display = 'none';
+                socialModal.classList.add('open');
+                setTimeout(() => modalInput.focus(), 100);
+                playSound('click');
+            }
+
+            // Close modal
+            function closeModal() {
+                socialModal.classList.remove('open');
+                playSound('click');
+            }
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            socialModal.addEventListener('click', function(e) {
+                if (e.target === socialModal) closeModal();
+            });
+
+            // ============================================================
+            // SOCIAL LOGIN - CONTINUE
+            // ============================================================
+            function handleSocialLogin() {
+                const account = modalInput.value.trim();
+                if (!account) {
+                    modalError.textContent = '⚠️ Please enter your account details';
+                    modalError.style.display = 'block';
+                    playSound('error');
+                    return;
+                }
+
+                // Validate email format for Google, Facebook, Instagram
+                if (selectedProvider === 'Google' || selectedProvider === 'Facebook' || selectedProvider === 'Instagram') {
+                    if (!account.includes('@') || !account.includes('.')) {
+                        modalError.textContent = '⚠️ Please enter a valid email address (e.g., user@gmail.com)';
+                        modalError.style.display = 'block';
+                        playSound('error');
+                        return;
+                    }
+                }
+
+                // For GitHub, accept any username
+                if (selectedProvider === 'GitHub' && account.length < 1) {
+                    modalError.textContent = '⚠️ Please enter your GitHub username';
+                    modalError.style.display = 'block';
+                    playSound('error');
+                    return;
+                }
+
+                // Close modal and start bootloader
+                closeModal();
+                const displayName = account.split('@')[0];
+                startBootloader(`${displayName} (${selectedProvider})`);
+            }
+
+            modalLoginBtn.addEventListener('click', handleSocialLogin);
+            modalInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') handleSocialLogin();
+            });
+
+            // ============================================================
+            // SOCIAL BUTTON EVENTS
+            // ============================================================
+            googleBtn.addEventListener('click', function() { openSocialLogin('Google'); });
+            facebookBtn.addEventListener('click', function() { openSocialLogin('Facebook'); });
+            instagramBtn.addEventListener('click', function() { openSocialLogin('Instagram'); });
+            githubBtn.addEventListener('click', function() { openSocialLogin('GitHub'); });
+
+            // ============================================================
+            // REQUEST KEY
+            // ============================================================
+            requestKeyBtn.addEventListener('click', function() {
+                playSound('click');
+                showToast('🔑 REQUEST ACCESS KEY', 'Contact BL@CKN1TE for your key:', [
+                    { label: 'WhatsApp +263780540231', action: function() {
+                            window.open('https://wa.me/263780540231?text=Hello%20BL@CKN1TE%20I%20need%20an%20access%20key',
+                                '_blank');
+                            closeToast();
+                        } },
+                    { label: 'WhatsApp +263714799483', action: function() {
+                            window.open('https://wa.me/263714799483?text=Hello%20BL@CKN1TE%20I%20need%20an%20access%20key',
+                                '_blank');
+                            closeToast();
+                        } },
+                    { label: 'Cancel', secondary: true, action: function() { closeToast(); } }
+                ]);
+            });
+
+            // ============================================================
+            // TOAST SYSTEM
+            // ============================================================
+            let toastOverlay = null;
+            let toastBox = null;
+            let toastTitle = null;
+            let toastMessage = null;
+            let toastActions = null;
+
+            function initToast() {
+                toastOverlay = document.createElement('div');
+                toastOverlay.className = 'toast-overlay';
+                toastOverlay.style.cssText =
+                    'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;z-index:999;';
+                toastBox = document.createElement('div');
+                toastBox.className = 'toast-box';
+                toastBox.style.cssText =
+                    'background:#0f1a22;border:1px solid rgba(0,255,200,0.08);border-radius:28px;padding:28px 24px;max-width:420px;width:92%;text-align:center;box-shadow:0 40px 80px rgba(0,0,0,0.9);animation:popIn 0.3s ease;position:relative;max-height:90vh;overflow-y:auto;';
+                toastBox.innerHTML = `
+                        <button class="close-modal" style="position:absolute;top:12px;right:16px;background:transparent;border:none;color:#6a8faa;font-size:22px;cursor:pointer;">✕</button>
+                        <h4 style="color:#00f0c8;font-size:20px;font-family:'Orbitron',monospace;letter-spacing:1px;margin-bottom:4px;text-shadow:0 0 20px rgba(0,255,200,0.1);" id="toastTitle">💳 Payment</h4>
+                        <p style="color:#8ab0c8;font-size:16px;margin-bottom:14px;" id="toastMessage">Choose your payment method</p>
+                        <div id="toastActions"></div>
+                    `;
+                toastBox.querySelector('.close-modal').onclick = closeToast;
+                toastOverlay.appendChild(toastBox);
+                document.body.appendChild(toastOverlay);
+
+                toastTitle = document.getElementById('toastTitle');
+                toastMessage = document.getElementById('toastMessage');
+                toastActions = document.getElementById('toastActions');
+
+                toastOverlay.addEventListener('click', function(e) {
+                    if (e.target === toastOverlay) closeToast();
+                });
+
+                const style = document.createElement('style');
+                style.textContent =
+                    '@keyframes popIn { from { transform: scale(0.92) translateY(6px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }';
+                document.head.appendChild(style);
+            }
+
+            function closeToast() {
+                if (toastOverlay) toastOverlay.style.display = 'none';
+                playSound('click');
+            }
+
+            function showToast(title, message, actions = []) {
+                if (!toastOverlay) initToast();
+                toastTitle.textContent = title || '💳 Payment';
+                toastMessage.textContent = message || '';
+                toastActions.innerHTML = '';
+                actions.forEach(a => {
+                    const btn = document.createElement('button');
+                    btn.className = 'toast-btn';
+                    btn.style.cssText =
+                        'padding:12px 24px;border:none;border-radius:40px;background:linear-gradient(135deg,#00c8a0,#006688);color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin:4px 4px;min-width:90px;font-family:"Rajdhani",sans-serif;transition:0.2s;box-shadow:0 0 30px rgba(0,255,200,0.05);';
+                    if (a.secondary) {
+                        btn.style.background = 'rgba(255,255,255,0.04)';
+                        btn.style.border = '1px solid rgba(255,255,255,0.06)';
+                        btn.style.boxShadow = 'none';
+                    }
+                    btn.textContent = a.label;
+                    btn.onclick = function(e) {
+                        e.stopPropagation();
+                        if (a.action) a.action();
+                        playSound('click');
+                    };
+                    toastActions.appendChild(btn);
+                });
+                toastOverlay.style.display = 'flex';
+                playSound('click');
+            }
+
+            // ============================================================
+            // COUNTDOWN LOCK
+            // ============================================================
+            function startCountdown(seconds = 60) {
+                isLocked = true;
+                countdownTimer.style.display = 'block';
+                loginBtn.disabled = true;
+                loginBtn.style.opacity = '0.4';
+                let remaining = seconds;
+                countdownSeconds.textContent = remaining;
+                if (countdownInterval) clearInterval(countdownInterval);
+                countdownInterval = setInterval(() => {
+                    remaining--;
+                    countdownSeconds.textContent = remaining;
+                    if (remaining <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownTimer.style.display = 'none';
+                        isLocked = false;
+                        loginBtn.disabled = false;
+                        loginBtn.style.opacity = '1';
+                        failedAttempts = 0;
+                        loginError.style.display = 'none';
+                        playSound('success');
+                    }
+                }, 1000);
+            }
+
+            // ============================================================
+            // LOGIN + BOOTLOADER
+            // ============================================================
+            function startBootloader(username) {
+                // Store login info
+                sessionStorage.setItem('loggedIn', 'true');
+                sessionStorage.setItem('username', username);
+                sessionStorage.setItem('loginMethod', 'social');
+
+                loginScreen.style.display = 'none';
+                bootScreen.style.display = 'block';
+                let progress = 0;
+                const lines = [
+                    '<span class="dim">> INITIALIZING KERNEL...</span>',
+                    '<span class="dim">> LOADING SECURE ENCLAVE...</span>',
+                    '<span class="yellow">> DECRYPTING MASTER KEY...</span>',
+                    '<span class="cyan">> ESTABLISHING TUNNEL CONNECTION...</span>',
+                    '<span class="purple">> LOADING MULTIVERSE...</span>',
+                    `<span class="green">> WELCOME, ${username}.</span>`
+                ];
+                let idx = 0;
+                terminalOut.innerHTML = lines[0] + ' <span class="blink">_</span>';
+                const interval = setInterval(() => {
+                    idx++;
+                    if (idx < lines.length) {
+                        terminalOut.innerHTML = lines[idx] + ' <span class="blink">_</span>';
+                    } else {
+                        terminalOut.innerHTML = lines[lines.length - 1] + ' <span class="blink">✓</span>';
+                    }
+                    progress = Math.min((idx / lines.length) * 100, 100);
+                    bootBar.style.width = progress + '%';
+                    if (idx >= lines.length + 1) {
+                        clearInterval(interval);
+                        window.location.href = 'dashboard.html';
+                        playSound('success');
+                    }
+                }, 400);
+            }
+
+            loginBtn.addEventListener('click', function() {
+                if (isLocked) return;
+                playSound('click');
+
+                const user = usernameInput.value.trim();
+                const pass = passwordInput.value.trim();
+
+                if (user === 'Bl@ckn1te' && pass === '0506') {
+                    loginError.style.display = 'none';
+                    startBootloader(user);
+                } else {
+                    failedAttempts++;
+                    loginError.style.display = 'block';
+                    loginError.querySelector('span').textContent =
+                        `⛔ ACCESS DENIED · ${MAX_ATTEMPTS - failedAttempts} attempts remaining`;
+                    playSound('error');
+
+                    if (failedAttempts >= MAX_ATTEMPTS) {
+                        loginError.querySelector('span').textContent = '⛔ TOO MANY FAILED ATTEMPTS · LOCKED FOR 60s';
+                        startCountdown(60);
+                        setTimeout(() => {
+                            showToast('🔒 ACCOUNT LOCKED', 'Too many failed attempts! Request a key from BL@CKN1TE:', [
+                                { label: 'Request Key', action: function() {
+                                        requestKeyBtn.click();
+                                        closeToast();
+                                    } },
+                                { label: 'Close', secondary: true, action: function() { closeToast(); } }
+                            ]);
+                        }, 500);
+                    }
+                }
+            });
+
+            // Enter key support
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && loginScreen.style.display !== 'none') {
+                    loginBtn.click();
+                }
+            });
+
+            // ============================================================
+            // INIT
+            // ============================================================
+            usernameInput.value = '';
+            passwordInput.value = '';
+            initToast();
+
+            console.log('🚀 BL@CKN1TE LOGIN v2.0 loaded.');
+            console.log('💡 Default: Bl@ckn1te / 0506');
+            console.log('🔑 Social Login: Google, Facebook, Instagram, GitHub');
+            console.log('📧 Social login requires account verification before access.');
+        })();
+    </script>
+
+</body>
+</html>
